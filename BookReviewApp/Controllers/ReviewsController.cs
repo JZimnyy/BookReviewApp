@@ -20,6 +20,15 @@ namespace BookReviewApp.Controllers
             var reviews = db.Reviews.Include(r => r.Book);
             return View(reviews.ToList());
         }
+        [Authorize]
+        public ActionResult MyReviews()
+        {
+            var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+            var name = user.First().Nickname;
+            var reviews = db.Reviews.Where(u=>u.Name.Equals(name)).Include(r => r.Book);
+            return View(reviews.ToList());
+        }
 
         // GET: Reviews/Details/5
         public ActionResult Details(int? id)
@@ -37,8 +46,15 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Reviews/Create
-        public ActionResult Create()
+        [Authorize]
+        public ActionResult Create(int? id)
         {
+            if (id != null)
+            {
+                var book = db.Books.Find(id);
+                ViewBag.Ksiazka = book.BookId;
+                return View();
+            }
             ViewBag.BookId = new SelectList(db.Books, "BookId", "Title");
             return View();
         }
@@ -48,8 +64,11 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ReviewId,Rating,Description,Name,BookId")] Review review)
+        [Authorize]
+        public ActionResult Create([Bind(Include = "ReviewId,Rating,Description,BookId")] Review review)
         {
+            var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+            review.Name = user.First().Nickname;
             if (ModelState.IsValid)
             {
                 db.Reviews.Add(review);
