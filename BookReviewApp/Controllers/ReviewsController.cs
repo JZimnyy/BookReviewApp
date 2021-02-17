@@ -47,16 +47,27 @@ namespace BookReviewApp.Controllers
 
         // GET: Reviews/Create
         [Authorize]
-        public ActionResult Create(int? id)
+        public ActionResult Create([Bind(Include ="id")]int? id)
         {
+            var book = db.Books.Find(id);
+            ViewBag.Ksiazka = book.BookId;
             if (id != null)
             {
-                var book = db.Books.Find(id);
-                ViewBag.Ksiazka = book.BookId;
+                var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+                var name = user.First().Nickname;
+                var review = from r in db.Reviews where r.Name == name && r.BookId == id select r;
+
+                if(review!=null)
+                {
+                    return RedirectToAction("Edit", new { BookId = id });
+                }
+
                 return View();
             }
+            
             ViewBag.BookId = new SelectList(db.Books, "BookId", "Title");
-            return View();
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         // POST: Reviews/Create
@@ -81,8 +92,19 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Reviews/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? BookId)
         {
+            if(BookId!=null)
+            {
+                var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+                var name = user.First().Nickname;
+                var reviewlist = from r in db.Reviews where r.Name == name && r.BookId == BookId select r;
+                Review review1 = db.Reviews.Find(reviewlist.First().ReviewId);
+
+                return View(review1);
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -107,7 +129,7 @@ namespace BookReviewApp.Controllers
             {
                 db.Entry(review).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details","Books", new { id = review.BookId });
             }
             ViewBag.BookId = new SelectList(db.Books, "BookId", "Title", review.BookId);
             return View(review);
