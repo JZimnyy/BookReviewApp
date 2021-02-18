@@ -5,32 +5,32 @@
 }
 
 
-<div class="container" style="margin-top:20px;">
+<div class="container margin-top">
     <div class="row">
         <div class="col-sm-6">
-            <center> <img src="@Model.Photo" /></center>
+            <center><img src="@Model.Photo" /></center>
         </div>
         <div class="col-sm-6">
             
-            <center><h1>@Model.Name @Model.Surname</h1></center>
+            <h1 class="title-center">@Model.Name @Model.Surname</h1>
             <p><b>Życiorys: </b>@Model.Description</p>
 
             <p>
                 <b>Lista książek:</b>
                 <ul>
-                    @foreach (var item in Model.Books)
+                    @foreach (var item in Model.Books.Take(10))
                     {
-                        <li><a href="/Books/Details/@item.BookId">@item.Title</a></li>
+                        <li><a href="/Books/Details/@item.BookId" class="link">@item.Title</a></li>
                     }
                 </ul>
             </p>
-            
+            <p class="title-center"><a href="/Books/Index/@Model.AuthorId" class="link-author-details">Zobacz książki &raquo;</a></p>
             
             @Html.ActionLink("Powrót do listy autorów", "Index")
 
             @if (User.IsInRole("Admin"))
             {
-                <p>@Html.ActionLink("Edit", "Edit", new { id = Model.AuthorId })</p>
+                <p>@Html.ActionLink("Edytuj", "Edit", new { id = Model.AuthorId })</p>
             }
         </div>
     </div>

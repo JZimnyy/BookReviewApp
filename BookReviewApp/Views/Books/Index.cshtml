@@ -10,14 +10,14 @@
     <div class="row">
         @foreach(var item in Model)
         {
-        <div class="col-xs-6 col-md-3 col-lg-2" style=" margin-top: 10px; ">
+        <div class="col-xs-6 col-md-3 col-lg-2 list-image" >
             <figure>
                 <a href="/Books/Details/@item.BookId">
                     <img src="@item.Cover" style="width: 100%; height: auto;"/>
                 </a>
-                <figcaption style="text-align:center"><b>@item.Title</b><br />
-                <a href="/Authors/Details/@item.AuthorId">
-                    <u>@item.Author.Name @item.Author.Surname</u>
+                <figcaption class="title-center"><b>@item.Title</b><br />
+                <a href="/Authors/Details/@item.AuthorId" class="link">
+                    <i>@item.Author.Name @item.Author.Surname</i>
                 </a>
                 </figcaption>
             </figure>

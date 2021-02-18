@@ -15,10 +15,14 @@ namespace BookReviewApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index()
+        public ActionResult Index(int? id)
         {
-            var books = db.Books.Include(b => b.Author);
-            return View(books.ToList());
+            if (id == null) { 
+            var books1 = db.Books.Include(b => b.Author);
+            return View(books1.ToList());
+            }
+            var books2 = db.Books.Include(b => b.Author).Where(a => a.AuthorId == id);
+            return View(books2.ToList());
         }
 
         // GET: Books/Details/5

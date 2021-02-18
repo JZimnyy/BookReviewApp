@@ -24,4 +24,52 @@ textarea {
     max-width: 280px;
 }
 
+.link {
+    color: inherit;
+    text-decoration: inherit;
+
+}
+
+.list-image {
+    margin-top: 10px;
+}
+
+.list-image img {
+    width: 100px;
+    height: auto;
+}
+
+.image-book {
+    width: 100px;
+    height: auto;
+}
+
+.list-name{
+    text-align:center;
+    font-weight:bold;
+}
+
+.title-center{
+    text-align:center;
+}
+
+.margin-top{
+    margin-top:20px;
+}
+
+.author-name{
+    text-align:center;
+    font-style:italic;
+}
+
+.link-author-details {
+    color: inherit;
+    text-decoration: inherit;
+    font-size:18px;
+    font-weight:bold;
+}
+
+
+
+
 
