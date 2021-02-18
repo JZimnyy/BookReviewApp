@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<BookReviewApp.Models.Review>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Ocenione książki";
 }
 
-<h2>Index</h2>
+<h2>Moje oceny</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -21,7 +18,7 @@
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayName("Autor")
         </th>
         <th></th>
     </tr>
@@ -38,12 +35,12 @@
             @Html.DisplayFor(modelItem => item.Description)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @item.Book.Author.Name @item.Book.Author.Surname
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ReviewId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ReviewId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ReviewId })
+            @Html.ActionLink("Edytuj ocenę", "Edit", new { BookId=item.BookId }) |
+            @Html.ActionLink("Zobacz książkę", "Details","Books", new { id=item.BookId },null) 
+            
         </td>
     </tr>
 }

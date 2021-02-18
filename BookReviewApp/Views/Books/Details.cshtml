@@ -1,60 +1,53 @@
 ﻿@model BookReviewApp.Models.Book
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Model.Title;
 }
 
-<h2>Details</h2>
 
-<div>
-    <h4>Book</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Author.Name)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Author.Name)
-        </dd>
+<div class="container" style="margin-top:20px;">
+    <div class="row">
+        <div class="col-sm-6">
+            <center> <img src="@Model.Cover" /></center>
+        </div>
+        <div class="col-sm-6">
+            <center><h1>@Html.DisplayFor(model => model.Title)</h1></center>
+            <center><h3>@Model.Author.Name @Model.Author.Surname</h3></center>
+            <p><b>Opis:</b>@Model.Description</p>
+            <p><b>Liczba stron:</b> @Model.Pages</p>
+            <p><b>ISBN: </b>@Model.ISBN</p>
+            @if (ViewBag.MyReview.Equals("Nie oceniłeś tej książki"))
+            {
+                <p><b>@ViewBag.MyReview</b></p>
+            }
+            else if (ViewBag.MyReview.Equals("Zaloguj się aby zobaczyć ocenę"))
+            {
+                <p><b>@ViewBag.MyReview</b></p>
+            }
+            else
+            {
+                <p><b >Moja ocena: @ViewBag.MyReview/10</b></p>
+            }
+            
+        
+            <h3>Oceny użytkowników</h3>
+            @foreach (var item in Model.Reviews.Take(3))
+            {
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+                <p><b >Użytkownik @item.Name ocenił na @item.Rating</b><br /><i>@item.Description</i></p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+            }
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
+            @Html.ActionLink("Powrót do listy książek", "Index")
 
-        <dt>
-            @Html.DisplayNameFor(model => model.RelaseDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RelaseDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Pages)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Pages)
-        </dd>
-
-    </dl>
-    
-
+            @if (User.IsInRole("Admin"))
+            {
+                <p>@Html.ActionLink("Edit", "Edit", new { id = Model.BookId })</p>
+            }
+        
+        </div>
+        
+   
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.BookId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -39,6 +39,7 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Authors/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -49,7 +50,8 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AuthorId,Name,Surname,Description")] Author author)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create([Bind(Include = "AuthorId,Name,Surname,Description,Photo")] Author author)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +64,7 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Authors/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -81,6 +84,7 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "AuthorId,Name,Surname,Description")] Author author)
         {
             if (ModelState.IsValid)
@@ -93,6 +97,7 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -108,6 +113,7 @@ namespace BookReviewApp.Controllers
         }
 
         // POST: Authors/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

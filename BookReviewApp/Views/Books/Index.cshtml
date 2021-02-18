@@ -1,57 +1,27 @@
 ﻿@model IEnumerable<BookReviewApp.Models.Book>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Spis książek";
 }
 
-<h2>Index</h2>
+<h2>Wszystkie książki</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Author.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RelaseDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Pages)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Author.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RelaseDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Pages)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BookId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BookId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BookId })
-        </td>
-    </tr>
-}
-
-</table>
+<div class="container">
+    <div class="row">
+        @foreach(var item in Model)
+        {
+        <div class="col-xs-6 col-md-3 col-lg-2" style=" margin-top: 10px; ">
+            <figure>
+                <a href="/Books/Details/@item.BookId">
+                    <img src="@item.Cover" style="width: 100%; height: auto;"/>
+                </a>
+                <figcaption style="text-align:center"><b>@item.Title</b><br />
+                <a href="/Authors/Details/@item.AuthorId">
+                    <u>@item.Author.Name @item.Author.Surname</u>
+                </a>
+                </figcaption>
+            </figure>
+        </div>
+        }
+    </div>
+</div>

@@ -15,9 +15,24 @@ namespace BookReviewApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Reviews
+        [Authorize]
         public ActionResult Index()
         {
-            var reviews = db.Reviews.Include(r => r.Book);
+            var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+            var name = user.First().Nickname;
+            var reviews = db.Reviews.Where(u => u.Name.Equals(name)).Include(r => r.Book);
+            return View(reviews.ToList());
+            // var reviews = db.Reviews.Include(r => r.Book);
+            //  return View(reviews.ToList());
+        }
+        [Authorize]
+        public ActionResult MyReviews()
+        {
+            var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+            var name = user.First().Nickname;
+            var reviews = db.Reviews.Where(u => u.Name.Equals(name)).Include(r => r.Book);
             return View(reviews.ToList());
         }
 
@@ -37,10 +52,39 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Reviews/Create
-        public ActionResult Create()
+        [Authorize]
+        public ActionResult Create([Bind(Include = "id")] int? id)
         {
-            ViewBag.BookId = new SelectList(db.Books, "BookId", "Title");
-            return View();
+            if(id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Book book = db.Books.Find(id);
+            if(book==null)
+            {
+                return HttpNotFound();
+            }
+            
+
+                ViewBag.Ksiazka = book.BookId;
+                ViewBag.Book = book;
+                var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+                var name = user.First().Nickname;
+                var review = from r in db.Reviews where r.Name == name && r.BookId == id select r;
+
+            try { 
+                if (review.First().BookId == id)
+                {
+                    return RedirectToAction("Edit", new { BookId = id });
+                }
+            }
+            catch { 
+                return View();
+            }
+            
+                return View();
+            
         }
 
         // POST: Reviews/Create
@@ -48,8 +92,11 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ReviewId,Rating,Description,Name,BookId")] Review review)
+        [Authorize]
+        public ActionResult Create([Bind(Include = "ReviewId,Rating,Description,BookId")] Review review)
         {
+            var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+            review.Name = user.First().Nickname;
             if (ModelState.IsValid)
             {
                 db.Reviews.Add(review);
@@ -62,8 +109,19 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Reviews/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int? id, int? BookId)
         {
+            if (BookId != null)
+            {
+                var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+                var name = user.First().Nickname;
+                var reviewlist = from r in db.Reviews where r.Name == name && r.BookId == BookId select r;
+                Review review1 = db.Reviews.Find(reviewlist.First().ReviewId);
+
+                return View(review1);
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -88,13 +146,14 @@ namespace BookReviewApp.Controllers
             {
                 db.Entry(review).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Books", new { id = review.BookId });
             }
             ViewBag.BookId = new SelectList(db.Books, "BookId", "Title", review.BookId);
             return View(review);
         }
 
         // GET: Reviews/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -110,6 +169,7 @@ namespace BookReviewApp.Controllers
         }
 
         // POST: Reviews/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

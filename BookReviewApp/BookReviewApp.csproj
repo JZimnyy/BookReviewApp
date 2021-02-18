@@ -186,6 +186,38 @@
     <Compile Include="Migrations\202102160934411_TableReview.Designer.cs">
       <DependentUpon>202102160934411_TableReview.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202102171119001_Photos.cs" />
+    <Compile Include="Migrations\202102171119001_Photos.Designer.cs">
+      <DependentUpon>202102171119001_Photos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102171519320_RequiredAttributes.cs" />
+    <Compile Include="Migrations\202102171519320_RequiredAttributes.Designer.cs">
+      <DependentUpon>202102171519320_RequiredAttributes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180752090_DataAttribute.cs" />
+    <Compile Include="Migrations\202102180752090_DataAttribute.Designer.cs">
+      <DependentUpon>202102180752090_DataAttribute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180753501_DataAttribute2.cs" />
+    <Compile Include="Migrations\202102180753501_DataAttribute2.Designer.cs">
+      <DependentUpon>202102180753501_DataAttribute2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180757306_ISBNupdate.cs" />
+    <Compile Include="Migrations\202102180757306_ISBNupdate.Designer.cs">
+      <DependentUpon>202102180757306_ISBNupdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180801233_ISBNupdate2.cs" />
+    <Compile Include="Migrations\202102180801233_ISBNupdate2.Designer.cs">
+      <DependentUpon>202102180801233_ISBNupdate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180813417_ISBNunique.cs" />
+    <Compile Include="Migrations\202102180813417_ISBNunique.Designer.cs">
+      <DependentUpon>202102180813417_ISBNunique.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202102180847366_ReviewRange.cs" />
+    <Compile Include="Migrations\202102180847366_ReviewRange.Designer.cs">
+      <DependentUpon>202102180847366_ReviewRange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Author.cs" />
@@ -204,10 +236,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
@@ -219,16 +250,16 @@
     <Content Include="Scripts\esm\popper.js.map" />
     <Content Include="Scripts\esm\popper-utils.min.js.map" />
     <Content Include="Scripts\esm\popper-utils.js.map" />
-    <Content Include="Scripts\bootstrap.min.js.map" />
-    <Content Include="Scripts\bootstrap.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.min.js.map" />
-    <Content Include="Scripts\bootstrap.bundle.js.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
@@ -360,6 +391,7 @@
     <Content Include="Views\Reviews\Details.cshtml" />
     <Content Include="Views\Reviews\Edit.cshtml" />
     <Content Include="Views\Reviews\Index.cshtml" />
+    <Content Include="Views\Reviews\MyReviews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -375,6 +407,30 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102160934411_TableReview.resx">
       <DependentUpon>202102160934411_TableReview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102171119001_Photos.resx">
+      <DependentUpon>202102171119001_Photos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102171519320_RequiredAttributes.resx">
+      <DependentUpon>202102171519320_RequiredAttributes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180752090_DataAttribute.resx">
+      <DependentUpon>202102180752090_DataAttribute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180753501_DataAttribute2.resx">
+      <DependentUpon>202102180753501_DataAttribute2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180757306_ISBNupdate.resx">
+      <DependentUpon>202102180757306_ISBNupdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180801233_ISBNupdate2.resx">
+      <DependentUpon>202102180801233_ISBNupdate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180813417_ISBNunique.resx">
+      <DependentUpon>202102180813417_ISBNunique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202102180847366_ReviewRange.resx">
+      <DependentUpon>202102180847366_ReviewRange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

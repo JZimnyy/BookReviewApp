@@ -33,13 +33,39 @@ namespace BookReviewApp.Controllers
             {
                 return HttpNotFound();
             }
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = from u in db.Users where u.UserName == User.Identity.Name select u;
+
+                var name = user.First().Nickname;
+                var review = from r in db.Reviews where r.Name == name && r.BookId == id select r;
+
+                try
+                {
+                    ViewBag.MyReview = review.First().Rating;
+                }
+                catch { ViewBag.MyReview = "Nie oceniłeś tej książki"; }
+            }else ViewBag.MyReview = "Zaloguj się aby zobaczyć ocenę";
+
             return View(book);
         }
 
         // GET: Books/Create
-        public ActionResult Create()
+        [Authorize(Roles ="Admin")]
+        public ActionResult Create(int? id)
         {
-            ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name");
+            if(id==null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Author author = db.Authors.Find(id);
+            if(author==null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.Autor = id;
+            ViewBag.AutorName = author.Name + " " + author.Surname;
+            //ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name");
             return View();
         }
 
@@ -48,13 +74,21 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "BookId,Title,Description,RelaseDate,Pages,AuthorId")] Book book)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create([Bind(Include = "BookId,Title,Description,RelaseDate,Pages,ISBN,Cover,AuthorId")] Book book)
         {
             if (ModelState.IsValid)
             {
+                try { 
                 db.Books.Add(book);
                 db.SaveChanges();
                 return RedirectToAction("Index");
+                }
+                catch
+                {
+                    ViewBag.Error = "Ten ISBN już został podany";
+                    return View(book);
+                }
             }
 
             ViewBag.AuthorId = new SelectList(db.Authors, "AuthorId", "Name", book.AuthorId);
@@ -62,6 +96,7 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Books/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -82,6 +117,7 @@ namespace BookReviewApp.Controllers
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit([Bind(Include = "BookId,Title,Description,RelaseDate,Pages,AuthorId")] Book book)
         {
             if (ModelState.IsValid)
@@ -95,6 +131,7 @@ namespace BookReviewApp.Controllers
         }
 
         // GET: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -110,6 +147,7 @@ namespace BookReviewApp.Controllers
         }
 
         // POST: Books/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
