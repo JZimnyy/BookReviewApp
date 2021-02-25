@@ -1,0 +1,23 @@
+﻿@model IEnumerable<BookReviewApp.Models.Book>
+
+<div class="container">
+    
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-xs-6 col-md-3 col-lg-2 list-image">
+                <figure>
+                    <a href="/Books/Details/@item.BookId">
+                        <img src="@item.Cover" style="width: 100%; height: auto;" />
+                    </a>
+                    <figcaption class="title-center">
+                        <b>@item.Title</b><br />
+                        <a href="/Authors/Details/@item.AuthorId" class="link">
+                            <i>@item.Author.Name @item.Author.Surname</i>
+                        </a>
+                    </figcaption>
+                </figure>
+            </div>
+        }
+    </div>
+</div>

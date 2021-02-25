@@ -23,6 +23,16 @@ namespace BookReviewApp.Controllers
             return View(db.Authors.ToList());
         }
 
+        public ActionResult AuthorList(string search)
+        {
+            if (search != null)
+            {
+                var authors = db.Authors.Where(a => a.Surname.Contains(search) || a.Name.Contains(search));
+                return PartialView(authors.ToList());
+            }
+            else return PartialView(db.Authors.ToList());
+        }
+
         // GET: Authors/Details/5
         public ActionResult Details(int? id)
         {

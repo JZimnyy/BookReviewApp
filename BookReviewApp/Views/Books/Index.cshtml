@@ -6,22 +6,30 @@
 
 <h2>Wszystkie książki</h2>
 
-<div class="container">
-    <div class="row">
-        @foreach(var item in Model)
+
+
+@using (Ajax.BeginForm(new AjaxOptions
+{
+    Url = Url.Action("BookList", "Books"),
+    HttpMethod = "get",
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "BooksList"
+}))
+{
+<div class="form-group form-inline">
+    <input type="text" name="search" class="form-control" placeholder="Tytuł książki" />
+    <select name="id" class="form-control">
+        <option value="" selected>Wybierz autora</option>
+        @foreach (var author in ViewBag.Authors)
         {
-        <div class="col-xs-6 col-md-3 col-lg-2 list-image" >
-            <figure>
-                <a href="/Books/Details/@item.BookId">
-                    <img src="@item.Cover" style="width: 100%; height: auto;"/>
-                </a>
-                <figcaption class="title-center"><b>@item.Title</b><br />
-                <a href="/Authors/Details/@item.AuthorId" class="link">
-                    <i>@item.Author.Name @item.Author.Surname</i>
-                </a>
-                </figcaption>
-            </figure>
-        </div>
+            <option value="@author.AuthorId">@author.Name @author.Surname</option>
+
         }
-    </div>
+    </select>
+    <input type="submit" value="Szukaj" class="btn btn-primary" />
+</div>
+}
+
+<div id="BooksList">
+    @Html.Action("BookList", "Books")
 </div>

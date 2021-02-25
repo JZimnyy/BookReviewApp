@@ -15,14 +15,44 @@ namespace BookReviewApp.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Books
-        public ActionResult Index(int? id)
+        public ActionResult Index()
         {
-            if (id == null) { 
-            var books1 = db.Books.Include(b => b.Author);
-            return View(books1.ToList());
+            var listaAutorow = db.Authors;
+
+            ViewBag.Authors = listaAutorow;
+            return View();
+        }
+
+        public ActionResult BookList(string search,int? id)
+        {
+            var listaAutorow = db.Authors;
+
+            ViewBag.Authors = listaAutorow;
+
+            if (id != null)
+            {
+                if (search != null)
+                {
+                    var books2 = db.Books.Include(b => b.Author).Where(a => a.AuthorId == id).Where(c => c.Title.Contains(search));
+                    return PartialView(books2.ToList());
+                }
+                else
+                {
+                    var books2 = db.Books.Include(b => b.Author).Where(a => a.AuthorId == id);
+                    return PartialView(books2.ToList());
+                }
+                //books2.Where(a => a.Title.Contains(search));
+                //return View(books2.ToList());
             }
-            var books2 = db.Books.Include(b => b.Author).Where(a => a.AuthorId == id);
-            return View(books2.ToList());
+            else if(search!=null)
+            {
+                var books2 = db.Books.Include(b => b.Author).Where(c => c.Title.Contains(search));
+                return PartialView(books2.ToList());
+            }else
+            {
+                var books2 = db.Books.Include(b => b.Author);
+                return PartialView(books2.ToList());
+            }
         }
 
         // GET: Books/Details/5
